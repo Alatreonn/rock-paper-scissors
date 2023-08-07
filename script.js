@@ -1,3 +1,7 @@
+let playerScore = 0;
+let computerScore = 0;
+let drawScore = 0;
+
 function getComputerChoice() {
     let comRNG = Math.floor(Math.random() * 3);
     switch (comRNG) {
@@ -10,7 +14,6 @@ function getComputerChoice() {
     }
 }
 
-
 function playRound(playerSelection, computerSelection) {
     const outcomes = {
         ROCK: { ROCK: "DRAW", PAPER: "LOSS", SCISSORS: "WIN" },
@@ -21,15 +24,37 @@ function playRound(playerSelection, computerSelection) {
     return outcomes[playerSelection][computerSelection];
 }
 
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
-    let drawScore = 0;
+function rps() {
+    const rock = document.querySelector(`button[class="rock"]`);   
+    const paper = document.querySelector(`button[class="paper"]`);
+    const scissors = document.querySelector(`button[class="scissors"]`);
 
-    for (let i = 0; i < 5; i++) {
+    rock.addEventListener("click", function(){
+        const playerSelection = "ROCK"
+        game(playerSelection);
+    });
+    paper.addEventListener("click", function(){
+        const playerSelection = "PAPER"
+        game(playerSelection);
+    });
+    scissors.addEventListener("click", function(){
+        const playerSelection = "SCISSORS"
+        game(playerSelection);
+    });
+}
+
+function Scoreboard() {
+    const playerScoreEl = document.querySelector(`div[class="plrscore"]`);
+    const computerScoreEl = document.querySelector(`div[class="comscore"]`);
+    const drawScoreEl = document.querySelector(`div[class="drawscore"]`);
+
+    playerScoreEl.textContent = `Player: ${playerScore}`;
+    drawScoreEl.textContent = `Draws: ${drawScore}`;
+    computerScoreEl.textContent = `Computer: ${computerScore}`;
+}
+
+function game(playerSelection) {
         const computerSelection = getComputerChoice();
-        const playerSelection = prompt("Rock, Paper or Scissors?").toUpperCase();
-
         const result = playRound(playerSelection, computerSelection);
 
         if (result === "WIN") {
@@ -42,12 +67,8 @@ function game() {
             drawScore++
             console.log(`It's a DRAW! ${playerSelection} is equal to ${computerSelection}!`);
         }
+        Scoreboard();
     }
 
-    console.log("Final Scores:");
-    console.log(` Player:` + playerScore);
-    console.log(` Computer: ` + computerScore);
-    console.log(` Draws ` + drawScore);
-}
 
-game();
+rps();
