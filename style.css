@@ -83,7 +83,7 @@ button {
     filter: drop-shadow(1px 1px 2px #000);
 }
 
-.round-result {
+.round-result , .round-result-exp {
     display: flex;
     align-items: center;
     justify-content: center;

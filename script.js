@@ -1,6 +1,7 @@
 let playerScore = 0;
 let computerScore = 0;
 let drawScore = 0;
+let btnDisabled = false;
 
 function getComputerChoice() {
     let comRNG = Math.floor(Math.random() * 3);
@@ -25,22 +26,27 @@ function playRound(playerSelection, computerSelection) {
 }
 
 function rps() {
-    const rock = document.querySelector(`button[class="rock"]`);   
+    const rock = document.querySelector(`button[class="rock"]`);
     const paper = document.querySelector(`button[class="paper"]`);
     const scissors = document.querySelector(`button[class="scissors"]`);
 
-    rock.addEventListener("click", function(){
+    rock.addEventListener("click", function () {
+        if(!Disabled);{
         const playerSelection = "ROCK"
-        game(playerSelection);
-    });
-    paper.addEventListener("click", function(){
+        game(playerSelection); }});
+    paper.addEventListener("click", function () {
+        if(!Disabled);{
         const playerSelection = "PAPER"
-        game(playerSelection);
-    });
-    scissors.addEventListener("click", function(){
+        game(playerSelection); }});
+    scissors.addEventListener("click", function () {
+        if(!Disabled);{
         const playerSelection = "SCISSORS"
-        game(playerSelection);
-    });
+        game(playerSelection); }});
+}
+
+function Disabled(sec) {
+    btnDisabled = true;
+    setTimeout(function() {btnDisabled = false;}, sec * 1000);
 }
 
 function Scoreboard() {
@@ -54,21 +60,52 @@ function Scoreboard() {
 }
 
 function game(playerSelection) {
-        const computerSelection = getComputerChoice();
-        const result = playRound(playerSelection, computerSelection);
-
-        if (result === "WIN") {
-            playerScore++;
-            console.log(`It's a WIN! ${playerSelection} wins over ${computerSelection}!`);
-        } else if (result === "LOSS") {
-            computerScore++;
-            console.log(`It's a LOSS! ${playerSelection} losses to ${computerSelection}!`);
-        } else {
-            drawScore++
-            console.log(`It's a DRAW! ${playerSelection} is equal to ${computerSelection}!`);
-        }
-        Scoreboard();
+    if (btnDisabled) {
+        return;
     }
+
+    const computerSelection = getComputerChoice();
+    const result = playRound(playerSelection, computerSelection);
+    const roundResultEl = document.querySelector(`div[class="round-result"]`);
+    const roundResultExpEl = document.querySelector(`div[class="round-result-exp"]`);
+
+    if (result === "WIN") {
+        playerScore++;
+        roundResultEl.textContent = `It's a WIN!`
+        roundResultExpEl.textContent = `${playerSelection} wins over ${computerSelection}!`;
+    } else if (result === "LOSS") {
+        computerScore++;
+        roundResultEl.textContent = `It's a LOSS!`;
+        roundResultExpEl.textContent = `${playerSelection} losses to ${computerSelection}!`;
+    } else {
+        drawScore++
+        roundResultEl.textContent = `It's a DRAW!`;
+        roundResultExpEl.textContent = `${playerSelection} is equal to ${computerSelection}!`;
+    }
+
+
+    function declareWinner() {
+        if (playerScore === 5) {
+            roundResultEl.textContent = `Game Over!`
+            roundResultExpEl.textContent = `Player has won!`
+        } else if (computerScore === 5) {
+            roundResultEl.textContent = `Game Over!`
+            roundResultExpEl.textContent = `Computer has won!`
+        } else {
+            return null;
+        }
+        Disabled(3);
+        
+        Scoreboard();
+        playerScore = 0;
+        computerScore = 0;
+        drawScore = 0;
+    }
+
+    Scoreboard();
+    declareWinner();
+}
+
 
 
 rps();
